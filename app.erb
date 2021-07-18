@@ -1,10 +1,10 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
-require 'Date'
+require 'securerandom'
 
 get '/' do
-  @data_list = CSV.read("./data.csv", headers: true)
+  @data_list = CSV.read("data.csv", headers: true)
   erb :index
 end
 
@@ -17,17 +17,31 @@ get '/new' do
 end
 
 post '/create' do
-  date = Date.today
-  id = CSV.read("./data.csv", headers: true).size
-  CSV.open('./data.csv','a') do |c|
-    c << [id,date,params[:title],params[:content]]
+  id = SecureRandom.uuid
+  CSV.open('data.csv','a') do |c|
+    c << [id,params[:title],params[:content]]
   end
   redirect to('/')
 end
 
-
 get '/show/:id' do
-  id = params["id"].to_i
-  @data = CSV.read("./data.csv", headers: true)[id]
+  @data = CSV.table("data.csv", headers: true).by_row.find {|row|
+    row[:id] == params["id"]
+  }
   erb :show
+end
+
+get '/delete/:id' do
+  csv_table = CSV.table("data.csv", headers: true).by_row!
+  
+  csv_table.delete_if do |row|
+    row[:id] == params["id"]
+  end
+
+  CSV.open("data.csv", "w", headers: true) do |c|
+    c << ["id","title","content"]
+    csv_table.each { |row| c.puts row }
+  end
+  redirect to('/')
+  erb :delete
 end

@@ -10,8 +10,10 @@
     <% @data_list.each do |data| %>
         <li><%= data["title"] %></li>
         <a href="/show/<%= data["id"]%>">詳細ページへ</a>
+        <a href="/delete/<%= data["id"]%>">削除する</a>
     <% end %>
     </ul>
     <a href="/new">新規作成</a>
+
 </body>
 </html>
