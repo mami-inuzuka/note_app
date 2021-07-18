@@ -8,10 +8,6 @@ get '/' do
   erb :index
 end
 
-get '/about' do
-  erb :about
-end
-
 get '/new' do
   erb :new
 end
@@ -25,17 +21,17 @@ post '/create' do
 end
 
 get '/show/:id' do
-  @data = CSV.table("data.csv", headers: true).by_row.find {|row|
-    row[:id] == params["id"]
+  csv_table = CSV.table("data.csv", headers: true).by_row
+  @data = csv_table.find {|row|
+    row[:id] == params[:id]
   }
   erb :show
 end
 
 get '/delete/:id' do
-  csv_table = CSV.table("data.csv", headers: true).by_row!
-  
+  csv_table = CSV.table("data.csv", headers: true).by_row
   csv_table.delete_if do |row|
-    row[:id] == params["id"]
+    row[:id] == params[:id]
   end
 
   CSV.open("data.csv", "w", headers: true) do |c|
@@ -44,4 +40,27 @@ get '/delete/:id' do
   end
   redirect to('/')
   erb :delete
+end
+
+get '/edit/:id' do
+  csv_table = CSV.table("data.csv", headers: true).by_row
+  @data = csv_table.find {|row|
+    row[:id] == params[:id]
+  }
+  erb :edit
+end
+
+patch '/update/:id' do
+  data = CSV.table("data.csv", headers: true)
+  data.each do |row|
+    if row[:id] == params[:id]
+      row[:title] = params[:title]
+      row[:content] = params[:content]ß
+    end
+  end
+  CSV.open("data.csv", "w", headers: true) do |c|
+    c << ["id","title","content"]
+    data.each { |row| c.puts row }
+  end
+  redirect to('/')
 end
