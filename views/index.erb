@@ -6,5 +6,12 @@
 </head>
 <body>
     <h1>MEMO APP</h1>
+    <ul>
+    <% @data_list.each do |data| %>
+        <li><%= data["title"] %></li>
+        <a href="/show/<%= data["id"]%>">詳細ページへ</a>
+    <% end %>
+    </ul>
+    <a href="/new">新規作成</a>
 </body>
 </html>

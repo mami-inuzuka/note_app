@@ -1,6 +1,33 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'csv'
+require 'Date'
 
 get '/' do
+  @data_list = CSV.read("./data.csv", headers: true)
   erb :index
+end
+
+get '/about' do
+  erb :about
+end
+
+get '/new' do
+  erb :new
+end
+
+post '/create' do
+  date = Date.today
+  id = CSV.read("./data.csv", headers: true).size
+  CSV.open('./data.csv','a') do |c|
+    c << [id,date,params[:title],params[:content]]
+  end
+  redirect to('/')
+end
+
+
+get '/show/:id' do
+  id = params["id"].to_i
+  @data = CSV.read("./data.csv", headers: true)[id]
+  erb :show
 end
