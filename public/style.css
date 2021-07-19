@@ -125,3 +125,14 @@ ul.memo_list li a {
   width: 100%;
   height: 100%;
 }
+
+.error_404 {
+  text-align: center;
+}
+
+.error_404 h1 {
+  color: #64BBBF;
+  font-size: 80px;
+  letter-spacing: 0.1em;
+  margin-bottom: 32px;
+}

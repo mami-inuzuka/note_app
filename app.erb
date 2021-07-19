@@ -58,3 +58,7 @@ patch '/update/:id' do
   end
   redirect to('/')
 end
+
+not_found do
+  erb :error_404
+end
