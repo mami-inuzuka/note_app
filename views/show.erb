@@ -1,5 +1,8 @@
-<p><%= @data[:title] %></p>
-<p><%= @data[:content] %></p>
-
-<a href="/delete/<%= @data[:id]%>">削除する</a>
-<a href="/edit/<%= @data[:id]%>">編集する</a>
+<div class="memo__detail">
+  <div class="memo__title"><%= @data[:title] %></div>
+  <div class="memo__content"><%= @data[:content] %></div>
+</div>
+<div class="button__wrap">
+  <a class="button__blue" href="/edit/<%= @data[:id]%>">編集する</a>
+  <a class="button__red" href="/delete/<%= @data[:id]%>">削除する</a>
+</div>

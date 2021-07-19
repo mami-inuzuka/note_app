@@ -1,6 +1,19 @@
 <form action="/update/<%= @data[:id] %>" method="post">
-  <input type="hidden" name="_method" value="patch">
-  <input type="text" name="title" value="<%= @data[:title] %>">
+<input type="hidden" name="_method" value="patch">
+<div class="form__wrap">
+  <label for="title">タイトル</label>
+  <div class="form__title">
+    <input type="text" name="title" value="<%= @data[:title] %>">
+  </div>
+
+  <label for="content">内容</label>
+  <div class="form__content">
   <textarea rows="10" cols="60" name="content"><%= @data[:content] %></textarea>
-  <input type="submit" value="更新する">
+  </div>
+</div>
+<div class="button__wrap">
+  <div class="button__blue button__submit">
+    <input type="submit" value="更新する">
+  </div>
+</div>
 </form>
