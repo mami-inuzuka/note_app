@@ -1,2 +1,5 @@
 <p><%= @data[:title] %></p>
 <p><%= @data[:content] %></p>
+
+<a href="/delete/<%= @data[:id]%>">削除する</a>
+<a href="/edit/<%= @data[:id]%>">編集する</a>
