@@ -2,31 +2,38 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
 require 'securerandom'
+require 'pry'
+enable :method_override
 
-get '/' do
+# 一覧表示
+get '/lists' do
   @data_list = CSV.read("data.csv", headers: true)
   erb :index
 end
 
-get '/new' do
+# 新規作成ページ
+get '/notes' do
+  @id = SecureRandom.uuid
   erb :new
 end
 
-post '/create' do
-  id = SecureRandom.uuid
+# 新規作成
+post '/notes/:id' do
   CSV.open('data.csv','a') do |csv|
-    csv << [id,params[:title],params[:content]]
+    csv << [params[:id],params[:title],params[:content]]
   end
-  redirect to('/')
+  redirect to('/lists')
 end
 
-get '/show/:id' do
+# メモ詳細表示
+get '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   @data = csv_table.find { |row| row[:id] == params[:id] }
   erb :show
 end
 
-get '/delete/:id' do
+# メモ削除
+delete '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   csv_table.delete_if { |row| row[:id] == params[:id] }
 
@@ -34,17 +41,19 @@ get '/delete/:id' do
     csv << ["id","title","content"]
     csv_table.each { |row| csv << row }
   end
-  redirect to('/')
+  redirect to('/lists')
   erb :delete
 end
 
-get '/edit/:id' do
+# 編集ページ
+get '/notes/:id/edit' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   @data = csv_table.find { |row| row[:id] == params[:id] }
   erb :edit
 end
 
-patch '/update/:id' do
+# メモ更新
+patch '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true)
   csv_table.each do |row|
     if row[:id] == params[:id]
@@ -56,7 +65,7 @@ patch '/update/:id' do
     csv << ["id","title","content"]
     csv_table.each { |row| csv << row }
   end
-  redirect to('/')
+  redirect to('/lists')
 end
 
 not_found do
