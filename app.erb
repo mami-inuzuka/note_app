@@ -5,19 +5,19 @@ require 'securerandom'
 require 'pry'
 enable :method_override
 
-# 一覧表示
+# メモ一覧の表示
 get '/lists' do
   @data_list = CSV.read("data.csv", headers: true)
   erb :index
 end
 
-# 新規作成ページ
+# 新規メモ作成ページの表示
 get '/notes' do
   @id = SecureRandom.uuid
   erb :new
 end
 
-# 新規作成
+# 新規メモを投稿
 post '/notes/:id' do
   CSV.open('data.csv','a') do |csv|
     csv << [params[:id],h(params[:title]),h(params[:content])]
@@ -25,14 +25,14 @@ post '/notes/:id' do
   redirect to('/lists')
 end
 
-# メモ詳細表示
+# メモ詳細の表示
 get '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   @data = csv_table.find { |row| row[:id] == params[:id] }
   erb :show
 end
 
-# メモ削除
+# メモを削除
 delete '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   csv_table.delete_if { |row| row[:id] == params[:id] }
@@ -45,14 +45,14 @@ delete '/notes/:id' do
   erb :delete
 end
 
-# 編集ページ
+# メモの編集ページを表示
 get '/notes/:id/edit' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   @data = csv_table.find { |row| row[:id] == params[:id] }
   erb :edit
 end
 
-# メモ更新
+# メモの更新
 patch '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true)
   csv_table.each do |row|
