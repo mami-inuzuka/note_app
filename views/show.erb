@@ -6,9 +6,9 @@
     <div class="memo__content"><%= h(@data[:content]) %></div>
   </div>
   <div class="button__wrap">
+    <a class="button__blue" href="/notes/<%= @data[:id]%>/edit">編集する</a>
     <div class="button__red button__submit">
       <input type="submit" value="削除する">
     </div>
-    <a class="button__blue" href="/notes/<%= @data[:id]%>/edit">編集する</a>
   </div>
 </form>
