@@ -2,8 +2,8 @@
   <input type="hidden" name="_method" value="DELETE">
 
   <div class="memo__detail">
-    <div class="memo__title"><%= @data[:title] %></div>
-    <div class="memo__content"><%= @data[:content] %></div>
+    <div class="memo__title"><%= h(@data[:title]) %></div>
+    <div class="memo__content"><%= h(@data[:content]) %></div>
   </div>
   <div class="button__wrap">
     <div class="button__red button__submit">

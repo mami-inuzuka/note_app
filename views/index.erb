@@ -3,7 +3,7 @@
 </header>
 <ul class="memo_list">
   <% @data_list.each do |data| %>
-    <li><a href="/notes/<%= data["id"] %>"><%= data["title"] %></a></li>
+    <li><a href="/notes/<%= data["id"] %>"><%= h(data["title"]) %></a></li>
   <% end %>
 </ul>
 
