@@ -42,24 +42,17 @@ end
 
 # メモの編集ページを表示
 get '/notes/:id/edit' do
-  csv_table = CSV.table("data.csv", headers: true).by_row
-  @data = csv_table.find { |row| row[:id] == params[:id] }
+  conn = PG.connect(dbname: 'sinatra_note_app')
+  conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
+    @data = result
+  end
   erb :edit
 end
 
 # メモの更新
 patch '/notes/:id' do
-  csv_table = CSV.table("data.csv", headers: true)
-  csv_table.each do |row|
-    if row[:id] == params[:id]
-      row[:title] = params[:title]
-      row[:content] = params[:content]
-    end
-  end
-  CSV.open("data.csv", "w", headers: true) do |csv|
-    csv << ["id","title","content"]
-    csv_table.each { |row| csv << row }
-  end
+  conn = PG.connect(dbname: 'sinatra_note_app')
+  conn.exec( "UPDATE notes SET title = '#{params[:title]}', content = '#{params[:content]}' WHERE id = #{params[:id]}")
   redirect to('/lists')
 end
 
