@@ -34,13 +34,8 @@ end
 
 # メモを削除
 delete '/notes/:id' do
-  csv_table = CSV.table("data.csv", headers: true).by_row
-  csv_table.delete_if { |row| row[:id] == params[:id] }
-
-  CSV.open("data.csv", "w", headers: true) do |csv|
-    csv << ["id","title","content"]
-    csv_table.each { |row| csv << row }
-  end
+  conn = PG.connect(dbname: 'sinatra_note_app')
+  conn.exec("DELETE FROM notes WHERE id = #{params[:id]}")
   redirect to('/lists')
   erb :delete
 end
