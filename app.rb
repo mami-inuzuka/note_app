@@ -7,7 +7,7 @@ enable :method_override
 
 # メモ一覧の表示
 get '/lists' do
-  @data_list = CSV.read("data.csv", headers: true)
+  @conn = PG.connect(dbname: 'sinatra_note_app')
   erb :index
 end
 
@@ -25,8 +25,10 @@ end
 
 # メモ詳細の表示
 get '/notes/:id' do
-  csv_table = CSV.table("data.csv", headers: true).by_row
-  @data = csv_table.find { |row| row[:id] == params[:id] }
+  conn = PG.connect(dbname: 'sinatra_note_app')
+  conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
+    @data = result
+  end
   erb :show
 end
 
