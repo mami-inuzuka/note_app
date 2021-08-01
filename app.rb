@@ -13,15 +13,13 @@ end
 
 # 新規メモ作成ページの表示
 get '/notes' do
-  @id = SecureRandom.uuid
   erb :new
 end
 
 # 新規メモを投稿
-post '/notes/:id' do
-  CSV.open('data.csv','a') do |csv|
-    csv << [params[:id], params[:title], params[:content]]
-  end
+post '/notes' do
+  conn = PG.connect(dbname: 'sinatra_note_app')
+  conn.exec( "INSERT INTO notes (title,content) VALUES ('#{params[:title]}','#{params[:content]}')")
   redirect to('/lists')
 end
 
