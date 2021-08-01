@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
 require 'securerandom'
+require 'pg'
 enable :method_override
 
 # メモ一覧の表示
