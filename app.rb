@@ -30,11 +30,7 @@ get '/notes/:id' do
   conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
     @data = result
   end
-  if @data.nil?
-    erb :error404
-  else
-    erb :show
-  end
+  @data.nil? ? (erb :error404) : (erb :show)
 end
 
 # メモを削除
@@ -50,11 +46,7 @@ get '/notes/:id/edit' do
   conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
     @data = result
   end
-  if @data.nil?
-    erb :error404
-  else
-    erb :edit
-  end
+  @data.nil? ? (erb :error404) : (erb :edit)
 end
 
 # メモの更新
