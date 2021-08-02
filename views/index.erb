@@ -1,5 +1,5 @@
 <header class="header">
-  <h1>NOTE APP</h1><a class="button__blue" href="/notes">新規作成</a>
+  <h1>NOTE APP</h1><a class="button__blue" href="/notes/new">新規作成</a>
 </header>
 <ul class="memo_list">
   <% @conn.exec("SELECT * FROM notes") do |result| %>
