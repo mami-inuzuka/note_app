@@ -41,7 +41,6 @@ delete '/notes/:id' do
     csv_table.each { |row| csv << row }
   end
   redirect to('/lists')
-  erb :delete
 end
 
 # メモの編集ページを表示
