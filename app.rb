@@ -20,7 +20,7 @@ end
 # 新規メモを投稿
 post '/notes' do
   conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec( "INSERT INTO notes (title,content) VALUES ('#{params[:title]}','#{params[:content]}')")
+  conn.exec("INSERT INTO notes (title,content) VALUES ('#{params[:title]}','#{params[:content]}')")
   redirect to('/notes')
 end
 
@@ -60,7 +60,7 @@ end
 # メモの更新
 patch '/notes/:id' do
   conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec( "UPDATE notes SET title = '#{params[:title]}', content = '#{params[:content]}' WHERE id = #{params[:id]}")
+  conn.exec("UPDATE notes SET title = '#{params[:title]}', content = '#{params[:content]}' WHERE id = #{params[:id]}")
   redirect to('/notes')
 end
 
