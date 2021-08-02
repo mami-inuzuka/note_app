@@ -40,7 +40,7 @@ delete '/notes/:id' do
     csv << ["id","title","content"]
     csv_table.each { |row| csv << row }
   end
-  redirect to('/lists')
+  redirect to('/notes')
 end
 
 # メモの編集ページを表示
