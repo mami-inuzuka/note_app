@@ -12,14 +12,14 @@ end
 
 # 新規メモ作成ページの表示
 get '/notes/new' do
-  @id = SecureRandom.uuid
   erb :new
 end
 
 # 新規メモを投稿
-post '/notes/:id' do
+post '/notes' do
+  id = SecureRandom.uuid
   CSV.open('data.csv','a') do |csv|
-    csv << [params[:id], params[:title], params[:content]]
+    csv << [id, params[:title], params[:content]]
   end
   redirect to('/notes')
 end
