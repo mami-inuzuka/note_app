@@ -5,13 +5,13 @@ require 'securerandom'
 enable :method_override
 
 # メモ一覧の表示
-get '/lists' do
+get '/notes' do
   @data_list = CSV.read("data.csv", headers: true)
   erb :index
 end
 
 # 新規メモ作成ページの表示
-get '/notes' do
+get '/notes/new' do
   @id = SecureRandom.uuid
   erb :new
 end
@@ -21,7 +21,7 @@ post '/notes/:id' do
   CSV.open('data.csv','a') do |csv|
     csv << [params[:id], params[:title], params[:content]]
   end
-  redirect to('/lists')
+  redirect to('/notes')
 end
 
 # メモ詳細の表示
@@ -64,7 +64,7 @@ patch '/notes/:id' do
     csv << ["id","title","content"]
     csv_table.each { |row| csv << row }
   end
-  redirect to('/lists')
+  redirect to('/notes')
 end
 
 not_found do
