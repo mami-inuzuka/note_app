@@ -28,7 +28,11 @@ end
 get '/notes/:id' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   @data = csv_table.find { |row| row[:id] == params[:id] }
-  erb :show
+  if @data.nil?
+    erb :error_404
+  else
+    erb :show
+  end
 end
 
 # メモを削除
@@ -47,7 +51,11 @@ end
 get '/notes/:id/edit' do
   csv_table = CSV.table("data.csv", headers: true).by_row
   @data = csv_table.find { |row| row[:id] == params[:id] }
-  erb :edit
+  if @data.nil?
+    erb :error_404
+  else
+    erb :edit
+  end
 end
 
 # メモの更新
