@@ -6,9 +6,13 @@ require 'sinatra/reloader'
 
 enable :method_override
 
+def connect_db
+  @conn = PG.connect(dbname: 'sinatra_note_app')
+end
+
 # メモ一覧の表示
 get '/notes' do
-  @conn = PG.connect(dbname: 'sinatra_note_app')
+  connect_db if @conn.nil?
   erb :index
 end
 
@@ -19,15 +23,15 @@ end
 
 # 新規メモを投稿
 post '/notes' do
-  conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec("INSERT INTO notes (title,content) VALUES ('#{params[:title]}','#{params[:content]}')")
+  connect_db if @conn.nil?
+  @conn.exec("INSERT INTO notes (title,content) VALUES ('#{params[:title]}','#{params[:content]}')")
   redirect to('/notes')
 end
 
 # メモ詳細の表示
 get '/notes/:id' do
-  conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
+  connect_db if @conn.nil?
+  @conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
     @data = result
   end
   @data.nil? ? (erb :error404) : (erb :show)
@@ -35,15 +39,15 @@ end
 
 # メモを削除
 delete '/notes/:id' do
-  conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec("DELETE FROM notes WHERE id = #{params[:id]}")
+  connect_db if @conn.nil?
+  @conn.exec("DELETE FROM notes WHERE id = #{params[:id]}")
   redirect to('/notes')
 end
 
 # メモの編集ページを表示
 get '/notes/:id/edit' do
-  conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
+  connect_db if @conn.nil?
+  @conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
     @data = result
   end
   @data.nil? ? (erb :error404) : (erb :edit)
@@ -51,8 +55,8 @@ end
 
 # メモの更新
 patch '/notes/:id' do
-  conn = PG.connect(dbname: 'sinatra_note_app')
-  conn.exec("UPDATE notes SET title = '#{params[:title]}', content = '#{params[:content]}' WHERE id = #{params[:id]}")
+  connect_db if @conn.nil?
+  @conn.exec("UPDATE notes SET title = '#{params[:title]}', content = '#{params[:content]}' WHERE id = #{params[:id]}")
   redirect to('/notes')
 end
 
