@@ -1,0 +1,144 @@
+body {
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif;
+  background-color: #F5FAFA;
+  color: #333333;
+}
+.contents {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 64px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 64px;
+}
+
+.header h1 {
+  color: #64BBBF;
+}
+
+.button__blue {
+  width: 192px;
+  height: 56px;
+  border-radius: 8px;
+  background-color: #80C3C6;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.button__red {
+  width: 192px;
+  height: 56px;
+  border-radius: 8px;
+  background-color: #C94545;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+ul.memo_list li {
+  display: block;
+  list-style: none;
+  width: 100%;
+  min-height: 64px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #FFFFFF;
+  box-shadow: 0px 3px 28px rgba(79, 119, 121, 0.05);
+}
+
+ul.memo_list li a {
+  display: block;
+  min-height: 64px;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  text-decoration: none;
+  line-height: 1.65;
+  font-weight: bold;
+  color: #333333;
+}
+
+.memo__detail {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0px 3px 28px rgba(79, 119, 121, 0.05);
+  padding: 32px;
+}
+
+.memo__title {
+  border-bottom: 1px solid #ECF6F6;
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.button__wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 56px;
+}
+
+.button__wrap .button__blue,
+.button__wrap .button__red {
+  margin: 0 12px;
+}
+
+.form__wrap {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0px 3px 28px rgba(79, 119, 121, 0.05);
+  padding: 40px;
+}
+
+.form__wrap input,
+.form__wrap textarea {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  border: none;
+  outline: none;
+}
+
+.form__wrap label {
+  color: #64BBBF;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.form__content {
+  background-color: #F7F8F7;
+}
+
+.form__title {
+  background-color: #F7F8F7;
+  height: 56px;
+  margin-bottom: 40px;
+}
+
+.button__submit input {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.error_404 {
+  text-align: center;
+}
+
+.error_404 h1 {
+  color: #64BBBF;
+  font-size: 80px;
+  letter-spacing: 0.1em;
+  margin-bottom: 32px;
+}

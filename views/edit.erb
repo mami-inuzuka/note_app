@@ -1,0 +1,19 @@
+<form action="/notes/<%= @data[:id]%>" method="post">
+<input type="hidden" name="_method" value="patch">
+<div class="form__wrap">
+  <label for="title">タイトル</label>
+  <div class="form__title">
+    <input type="text" name="title" value="<%= h(@data[:title]) %>">
+  </div>
+
+  <label for="content">内容</label>
+  <div class="form__content">
+  <textarea rows="10" cols="60" name="content"><%= h(@data[:content]) %></textarea>
+  </div>
+</div>
+<div class="button__wrap">
+  <div class="button__blue button__submit">
+    <input type="submit" value="更新する">
+  </div>
+</div>
+</form>

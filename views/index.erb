@@ -1,0 +1,9 @@
+<header class="header">
+  <h1>NOTE APP</h1><a class="button__blue" href="/notes/new">新規作成</a>
+</header>
+<ul class="memo_list">
+  <% @data_list.each do |data| %>
+    <li><a href="/notes/<%= data["id"] %>"><%= h(data["title"]) %></a></li>
+  <% end %>
+</ul>
+
