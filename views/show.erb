@@ -1,12 +1,12 @@
-<form method="post" action="/notes/<%= @data[:id]%>">
+<form method="post" action="/notes/<%= @data["id"]%>">
   <input type="hidden" name="_method" value="DELETE">
 
   <div class="memo__detail">
-    <div class="memo__title"><%= h(@data[:title]) %></div>
-    <div class="memo__content"><%= h(@data[:content]) %></div>
+    <div class="memo__title"><%= h(@data["title"]) %></div>
+    <div class="memo__content"><%= h(@data["content"]) %></div>
   </div>
   <div class="button__wrap">
-    <a class="button__blue" href="/notes/<%= @data[:id]%>/edit">編集する</a>
+    <a class="button__blue" href="/notes/<%= @data["id"]%>/edit">編集する</a>
     <div class="button__red button__submit">
       <input type="submit" value="削除する">
     </div>

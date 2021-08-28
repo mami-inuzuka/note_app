@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
+require 'pg'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'csv'
-require 'securerandom'
+
 enable :method_override
+
+def connection
+  @conn = PG.connect(dbname: 'sinatra_note_app') if @conn.nil?
+end
 
 # メモ一覧の表示
 get '/notes' do
-  @data_list = CSV.read('data.csv', headers: true)
+  connection
   erb :index
 end
 
@@ -19,60 +23,40 @@ end
 
 # 新規メモを投稿
 post '/notes' do
-  id = SecureRandom.uuid
-  CSV.open('data.csv', 'a') do |csv|
-    csv << [id, params[:title], params[:content]]
-  end
+  connection
+  @conn.exec("INSERT INTO notes (title,content) VALUES ('#{params[:title]}','#{params[:content]}')")
   redirect to('/notes')
 end
 
 # メモ詳細の表示
 get '/notes/:id' do
-  csv_table = CSV.table('data.csv', headers: true).by_row
-  @data = csv_table.find { |row| row[:id] == params[:id] }
-  if @data.nil?
-    erb :error404
-  else
-    erb :show
+  connection
+  @conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
+    @data = result
   end
+  @data.nil? ? (erb :error404) : (erb :show)
 end
 
 # メモを削除
 delete '/notes/:id' do
-  csv_table = CSV.table('data.csv', headers: true).by_row
-  csv_table.delete_if { |row| row[:id] == params[:id] }
-
-  CSV.open('data.csv', 'w', headers: true) do |csv|
-    csv << %w[id title content]
-    csv_table.each { |row| csv << row }
-  end
+  connection
+  @conn.exec("DELETE FROM notes WHERE id = #{params[:id]}")
   redirect to('/notes')
 end
 
 # メモの編集ページを表示
 get '/notes/:id/edit' do
-  csv_table = CSV.table('data.csv', headers: true).by_row
-  @data = csv_table.find { |row| row[:id] == params[:id] }
-  if @data.nil?
-    erb :error404
-  else
-    erb :edit
+  connection
+  @conn.exec("SELECT * FROM notes WHERE id = #{params[:id]}").each do |result|
+    @data = result
   end
+  @data.nil? ? (erb :error404) : (erb :edit)
 end
 
 # メモの更新
 patch '/notes/:id' do
-  csv_table = CSV.table('data.csv', headers: true)
-  csv_table.each do |row|
-    if row[:id] == params[:id]
-      row[:title] = params[:title]
-      row[:content] = params[:content]
-    end
-  end
-  CSV.open('data.csv', 'w', headers: true) do |csv|
-    csv << %w[id title content]
-    csv_table.each { |row| csv << row }
-  end
+  connection
+  @conn.exec("UPDATE notes SET title = '#{params[:title]}', content = '#{params[:content]}' WHERE id = #{params[:id]}")
   redirect to('/notes')
 end
 
